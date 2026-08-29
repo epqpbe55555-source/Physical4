@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Smart — Solubility & Distribution Phenomena</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E2B27;
+    --ink-2:#123833;
+    --ink-3:#0A211E;
+    --paper:#F4EFDD;
+    --paper-2:#ECE4C8;
+    --text:#182420;
+    --text-soft:#4B5850;
+    --aqua:#49CDC0;
+    --aqua-dark:#1F8F85;
+    --amber:#DFA43F;
+    --coral:#E1684A;
+    --violet:#8D80D6;
+    --green:#7AB37A;
+    --line: rgba(244,239,221,0.14);
+    --line-soft: rgba(24,36,32,0.12);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    font-size:.72rem;
+    font-weight:600;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    margin:0;
+  }
+  a{color:inherit;}
+  button{font-family:inherit;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:
+      radial-gradient(1100px 600px at 85% -10%, rgba(73,205,192,0.18), transparent 60%),
+      linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
+    color:var(--paper);
+    padding:56px 6vw 44px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:40px;
+    flex-wrap:wrap;
+    border-bottom:1px solid var(--line);
+  }
+  .hero-text{max-width:620px;}
+  .hero-text .eyebrow{color:var(--aqua);margin-bottom:14px;display:block;}
+  .hero-text h1{
+    font-size:clamp(2.6rem,6vw,4.4rem);
+    line-height:.98;
+    color:var(--paper);
+  }
+  .hero-text h1 em{
+    font-style:italic;
+    color:var(--aqua);
+    font-weight:500;
+  }
+  .hero-text p{
+    margin-top:18px;
+    font-size:1.02rem;
+    color:#CFE6E1;
+    max-width:480px;
+    line-height:1.55;
+  }
+  .hero-tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;}
+  .hero-tags span{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.68rem;
+    letter-spacing:.06em;
+    border:1px solid var(--line);
+    border-radius:100px;
+    padding:6px 12px;
+    color:#BFE0DA;
+  }
+
+  /* Beaker signature element */
+  .beaker-wrap{
+    position:relative;
+    width:190px;
+    height:260px;
+    flex-shrink:0;
+  }
+  .beaker-wrap svg{width:100%;height:100%;overflow:visible;}
+  .liquid-clip{transition:transform 1.4s cubic-bezier(.3,.9,.3,1);}
+  .bubble{
+    fill:rgba(244,239,221,0.65);
+    animation:rise 3.6s linear infinite;
+  }
+  @keyframes rise{
+    0%{transform:translateY(0);opacity:0;}
+    10%{opacity:1;}
+    90%{opacity:.6;}
+    100%{transform:translateY(-120px);opacity:0;}
+  }
+  .beaker-caption{
+    position:absolute;
+    bottom:-30px;left:0;right:0;
+    text-align:center;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.68rem;
+    color:var(--aqua);
+    letter-spacing:.06em;
+  }
+
+  /* ---------- TABS ---------- */
+  .tabbar{
+    position:sticky;top:0;z-index:50;
+    display:flex;
+    background:var(--ink-3);
+    border-bottom:1px solid var(--line);
+    overflow-x:auto;
+  }
+  .tabbtn{
+    flex:1 1 auto;
+    min-width:150px;
+    background:transparent;
+    border:none;
+    color:#9FB4AE;
+    padding:16px 14px 13px;
+    cursor:pointer;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.78rem;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+    border-bottom:3px solid transparent;
+    transition:.2s;
+    text-align:left;
+  }
+  .tabbtn b{color:inherit;opacity:.55;margin-right:8px;font-weight:600;}
+  .tabbtn:hover{color:var(--paper);background:rgba(255,255,255,0.03);}
+  .tabbtn.active{color:var(--paper);}
+  .tabbtn[data-c="aqua"].active{border-bottom-color:var(--aqua);}
+  .tabbtn[data-c="amber"].active{border-bottom-color:var(--amber);}
+  .tabbtn[data-c="violet"].active{border-bottom-color:var(--violet);}
+  .tabbtn[data-c="coral"].active{border-bottom-color:var(--coral);}
+  .tabbtn[data-c="green"].active{border-bottom-color:var(--green);}
+
+  /* ---------- SECTIONS ---------- */
+  main{max-width:1180px;margin:0 auto;padding:44px 6vw 90px;}
+  .section{display:none;animation:fadein .35s ease;}
+  .section.active{display:block;}
+  @keyframes fadein{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .section-head{margin-bottom:30px;}
+  .section-head .eyebrow{margin-bottom:8px;display:block;}
+  .section-head h2{font-size:clamp(1.7rem,3vw,2.3rem);}
+  .section-head p{color:var(--text-soft);max-width:640px;margin-top:8px;line-height:1.5;}
+  .tag-aqua .eyebrow{color:var(--aqua-dark);} .tag-amber .eyebrow{color:#A97A1E;}
+  .tag-violet .eyebrow{color:#5B4FB0;} .tag-coral .eyebrow{color:#B8412A;} .tag-green .eyebrow{color:#3F7A3F;}
+
+  /* ---------- OVERVIEW CARDS ---------- */
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px;}
+  .card{
+    background:#fff;
+    border:1px solid var(--line-soft);
+    border-radius:14px;
+    padding:20px 20px 18px;
+    border-top:4px solid var(--aqua);
+  }
+  .card h3{font-size:1.05rem;margin-bottom:10px;}
+  .card ul{margin:0;padding-left:18px;color:var(--text-soft);font-size:.9rem;line-height:1.55;}
+  .card .formula{
+    font-family:'IBM Plex Mono',monospace;
+    background:var(--paper-2);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:.82rem;
+    margin:8px 0;
+    display:inline-block;
+  }
+  .card.c2{border-top-color:var(--amber);}
+  .card.c3{border-top-color:var(--violet);}
+  .card.c4{border-top-color:var(--coral);}
+  .card.c5{border-top-color:var(--green);}
+
+  .usp-table{width:100%;border-collapse:collapse;margin-top:6px;font-size:.86rem;}
+  .usp-table th,.usp-table td{padding:6px 8px;text-align:left;border-bottom:1px solid var(--line-soft);}
+  .usp-table th{font-family:'IBM Plex Mono',monospace;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text-soft);}
+
+  /* ---------- DIAGRAMS ---------- */
+  .diagram-block{
+    background:#fff;border:1px solid var(--line-soft);border-radius:16px;
+    padding:26px 26px 24px;margin-bottom:24px;
+  }
+  .diagram-block h3{font-size:1.15rem;margin-bottom:4px;}
+  .diagram-block .sub{color:var(--text-soft);font-size:.86rem;margin-bottom:18px;}
+  .btnrow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+  .chip{
+    border:1px solid var(--line-soft);
+    background:var(--paper);
+    padding:8px 14px;border-radius:100px;cursor:pointer;
+    font-size:.82rem;font-weight:600;color:var(--text);
+    transition:.15s;
+  }
+  .chip:hover{border-color:var(--aqua-dark);}
+  .chip.on{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+
+  .beaker-row{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-end;}
+  .mini-beaker{width:110px;text-align:center;}
+  .mini-beaker svg{width:100%;height:130px;}
+  .mini-beaker .lbl{font-family:'IBM Plex Mono',monospace;font-size:.66rem;margin-top:6px;color:var(--text-soft);}
+  .state-info{
+    margin-top:16px;background:var(--paper);border-radius:10px;padding:14px 16px;
+    font-size:.9rem;line-height:1.5;min-height:54px;
+  }
+  .state-info b{color:var(--aqua-dark);}
+
+  .barchart{display:flex;flex-direction:column;gap:10px;}
+  .bar-row{display:grid;grid-template-columns:190px 1fr 60px;align-items:center;gap:10px;cursor:pointer;}
+  .bar-row .name{font-size:.83rem;font-weight:600;}
+  .bar-track{background:var(--paper-2);border-radius:6px;height:20px;overflow:hidden;}
+  .bar-fill{height:100%;background:linear-gradient(90deg,var(--aqua-dark),var(--aqua));border-radius:6px;transition:width .5s;}
+  .bar-row .val{font-family:'IBM Plex Mono',monospace;font-size:.78rem;text-align:right;}
+  .bar-row.active .name{color:var(--aqua-dark);}
+
+  .usp-scale{display:flex;border-radius:10px;overflow:hidden;height:46px;}
+  .usp-seg{flex:1;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'IBM Plex Mono',monospace;font-size:.66rem;cursor:pointer;transition:.2s;opacity:.85;}
+  .usp-seg:hover,.usp-seg.on{opacity:1;transform:scaleY(1.08);}
+
+  .chart-legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px;}
+  .leg-item{display:flex;align-items:center;gap:6px;font-size:.82rem;cursor:pointer;user-select:none;}
+  .leg-dot{width:12px;height:12px;border-radius:3px;}
+  .leg-item.off{opacity:.3;}
+
+  .slider-row{display:flex;align-items:center;gap:14px;margin:14px 0;flex-wrap:wrap;}
+  .slider-row input[type=range]{flex:1;min-width:180px;accent-color:var(--aqua-dark);}
+  .slider-row .readout{font-family:'IBM Plex Mono',monospace;font-size:.85rem;background:var(--paper);padding:6px 10px;border-radius:8px;}
+
+  .layers{border:1px solid var(--line-soft);border-radius:12px;overflow:hidden;}
+  .layer{position:relative;display:flex;align-items:center;flex-wrap:wrap;gap:5px;padding:14px;min-height:70px;}
+  .layer.oil{background:#FBEFD8;}
+  .layer.water{background:#DDF2F0;}
+  .layer .tag{position:absolute;top:6px;right:10px;font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--text-soft);}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--coral);}
+
+  /* ---------- MINI MAP ---------- */
+  .map-wrap{display:grid;grid-template-columns:1.1fr 1fr;gap:22px;align-items:start;}
+  @media(max-width:900px){.map-wrap{grid-template-columns:1fr;}}
+  .lecture-block{margin-bottom:16px;}
+  .lecture-title{
+    font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--text-soft);margin-bottom:8px;display:flex;align-items:center;gap:8px;
+  }
+  .lecture-title::before{content:'';width:16px;height:2px;background:var(--violet);display:inline-block;}
+  .topic-row{display:flex;flex-wrap:wrap;gap:8px;}
+  .topic-btn{
+    border:1px solid var(--line-soft);background:#fff;border-radius:10px;
+    padding:9px 13px;font-size:.83rem;cursor:pointer;text-align:left;transition:.15s;
+  }
+  .topic-btn:hover{border-color:var(--violet);}
+  .topic-btn.on{background:var(--violet);color:#fff;border-color:var(--violet);}
+  .reader{
+    position:sticky;top:76px;
+    background:var(--ink);color:var(--paper);
+    border-radius:16px;padding:26px 26px 22px;min-height:320px;
+  }
+  .reader .eyebrow{color:var(--aqua);margin-bottom:10px;display:block;}
+  .reader h3{color:#fff;font-size:1.25rem;margin-bottom:12px;}
+  .reader p{line-height:1.6;color:#D8E6E2;font-size:.95rem;}
+  .reader .placeholder{color:#88A29B;font-style:italic;}
+
+  /* ---------- FLASHCARDS ---------- */
+  .fc-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:18px;}
+  .fc-counter{font-family:'IBM Plex Mono',monospace;font-size:.82rem;color:var(--text-soft);}
+  .fc-stage{display:flex;justify-content:center;margin:20px 0;}
+  .flashcard{
+    width:100%;max-width:560px;height:280px;
+    perspective:1400px;cursor:pointer;
+  }
+  .fc-inner{
+    position:relative;width:100%;height:100%;
+    transition:transform .55s cubic-bezier(.4,.2,.2,1);
+    transform-style:preserve-3d;
+  }
+  .flashcard.flip .fc-inner{transform:rotateY(180deg);}
+  .fc-face{
+    position:absolute;inset:0;backface-visibility:hidden;
+    border-radius:18px;display:flex;align-items:center;justify-content:center;
+    padding:32px;text-align:center;font-size:1.15rem;line-height:1.5;
+  }
+  .fc-front{background:var(--ink);color:#fff;font-family:'Fraunces',serif;font-weight:500;font-size:1.4rem;}
+  .fc-back{background:var(--coral);color:#fff;transform:rotateY(180deg);font-size:1.02rem;}
+  .fc-hint{position:absolute;bottom:16px;left:0;right:0;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:.65rem;opacity:.6;}
+  .fc-controls{display:flex;justify-content:center;gap:12px;margin-top:10px;}
+  .fc-btn{
+    border:1px solid var(--line-soft);background:#fff;border-radius:100px;
+    padding:10px 20px;font-weight:600;font-size:.85rem;cursor:pointer;
+  }
+  .fc-btn.primary{background:var(--coral);color:#fff;border-color:var(--coral);}
+  .fc-btn:hover{opacity:.85;}
+
+  /* ---------- QUIZ ---------- */
+  .quiz-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:18px;}
+  .quiz-progress{font-family:'IBM Plex Mono',monospace;font-size:.82rem;color:var(--text-soft);}
+  .score-pill{
+    font-family:'IBM Plex Mono',monospace;font-size:.8rem;background:var(--ink);color:#fff;
+    padding:8px 14px;border-radius:100px;
+  }
+  .quiz-card{background:#fff;border:1px solid var(--line-soft);border-radius:16px;padding:28px;}
+  .quiz-q{font-size:1.15rem;font-weight:600;margin-bottom:20px;line-height:1.45;}
+  .opt-list{display:flex;flex-direction:column;gap:10px;}
+  .opt{
+    text-align:left;border:1.5px solid var(--line-soft);background:var(--paper);
+    border-radius:10px;padding:13px 16px;cursor:pointer;font-size:.94rem;transition:.15s;
+  }
+  .opt:hover{border-color:var(--green);}
+  .opt.correct{background:#E4F3E1;border-color:var(--green);font-weight:600;}
+  .opt.wrong{background:#FBE6E0;border-color:var(--coral);}
+  .opt.disabled{pointer-events:none;}
+  .quiz-explain{margin-top:16px;background:var(--paper-2);border-radius:10px;padding:14px 16px;font-size:.88rem;line-height:1.5;display:none;}
+  .quiz-nav{display:flex;justify-content:space-between;margin-top:22px;}
+  .qbtn{border:none;background:var(--ink);color:#fff;border-radius:100px;padding:11px 24px;font-weight:600;cursor:pointer;font-size:.86rem;}
+  .qbtn:disabled{opacity:.35;cursor:not-allowed;}
+  .qbtn.ghost{background:transparent;color:var(--text);border:1px solid var(--line-soft);}
+  .quiz-final{text-align:center;padding:50px 20px;}
+  .quiz-final .display{font-size:3rem;color:var(--green);}
+
+  footer{
+    background:var(--ink-3);color:#89A099;text-align:center;
+    padding:26px 20px;font-family:'IBM Plex Mono',monospace;font-size:.75rem;letter-spacing:.03em;
+  }
+  footer b{color:var(--aqua);}
+  @media(max-width:640px){
+    .bar-row{grid-template-columns:120px 1fr 44px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-text">
+    <span class="eyebrow">Pharmaceutics · Chapter 10</span>
+    <h1>Study<br><em>Smart.</em></h1>
+    <p>Solubility & Distribution Phenomena, distilled — the laws, the graphs, and the questions that actually get asked.</p>
+    <div class="hero-tags">
+      <span>Henry's Law</span><span>Ksp</span><span>Partition Coefficient</span><span>pHp</span><span>Cosolvency</span>
+    </div>
+  </div>
+  <div class="beaker-wrap">
+    <svg viewBox="0 0 120 170">
+      <defs>
+        <clipPath id="beakerClip">
+          <path d="M22 12 L22 40 L8 150 Q8 162 22 162 L98 162 Q112 162 112 150 L98 40 L98 12 Z"/>
+        </clipPath>
+        <linearGradient id="liquidGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#7FE6DA"/>
+          <stop offset="100%" stop-color="#1F8F85"/>
+        </linearGradient>
+      </defs>
+      <path d="M22 12 L22 40 L8 150 Q8 162 22 162 L98 162 Q112 162 112 150 L98 40 L98 12 Z"
+            fill="none" stroke="#F4EFDD" stroke-width="3"/>
+      <line x1="18" y1="12" x2="102" y2="12" stroke="#F4EFDD" stroke-width="3"/>
+      <g clip-path="url(#beakerClip)">
+        <rect id="liquidRect" class="liquid-clip" x="0" y="70" width="120" height="100" fill="url(#liquidGrad)"/>
+        <circle class="bubble" cx="40" cy="150" r="3" style="animation-delay:0s"/>
+        <circle class="bubble" cx="65" cy="150" r="2.2" style="animation-delay:1.1s"/>
+        <circle class="bubble" cx="80" cy="150" r="2.8" style="animation-delay:2.1s"/>
+        <circle class="bubble" cx="52" cy="150" r="2" style="animation-delay:.6s"/>
+      </g>
+      <text x="60" y="45" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="#F4EFDD" opacity=".6">Cₛₐₜ</text>
+    </svg>
+    <div class="beaker-caption">reaching equilibrium…</div>
+  </div>
+</header>
+
+<nav class="tabbar" id="tabbar">
+  <button class="tabbtn active" data-c="aqua" data-tab="overview"><b>01</b>Overview</button>
+  <button class="tabbtn" data-c="amber" data-tab="diagrams"><b>02</b>Diagrams</button>
+  <button class="tabbtn" data-c="violet" data-tab="map"><b>03</b>Mini Map</button>
+  <button class="tabbtn" data-c="coral" data-tab="cards"><b>04</b>Flash Cards</button>
+  <button class="tabbtn" data-c="green" data-tab="quiz"><b>05</b>Quiz Bank</button>
+</nav>
+
+<main>
+
+<!-- ================= OVERVIEW ================= -->
+<section class="section active" id="overview">
+  <div class="section-head tag-aqua">
+    <span class="eyebrow">01 · The essentials</span>
+    <h2>Every law, in one scroll.</h2>
+    <p>No lecture-length prose — just the definitions, formulas, and rules of thumb worth remembering.</p>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3>Definitions</h3>
+      <ul>
+        <li><b>Quantitative:</b> concentration of solute in a saturated solution at a given temperature.</li>
+        <li><b>Qualitative:</b> spontaneous interaction of two+ substances forming a homogeneous molecular dispersion.</li>
+        <li><b>Saturated</b> — solute in equilibrium with solid phase.</li>
+        <li><b>Unsaturated</b> — below the saturation concentration.</li>
+        <li><b>Supersaturated</b> — more solute than the limit predicts (metastable).</li>
+      </ul>
+    </div>
+
+    <div class="card c2">
+      <h3>Factors Affecting Solubility</h3>
+      <ul>
+        <li>Physical & chemical properties of solute/solvent</li>
+        <li>Temperature</li>
+        <li>Pressure above the solution</li>
+        <li>pH of the solution</li>
+        <li>State of subdivision (particle size) of the solute</li>
+      </ul>
+    </div>
+
+    <div class="card c3">
+      <h3>Solubility Expressions</h3>
+      <ul>
+        <li>Molarity, Normality, Molality, Mole fraction, % (w/w, w/v, v/v)</li>
+        <li><b>USP:</b> mL of solvent needed to dissolve 1 g solute.</li>
+      </ul>
+      <table class="usp-table">
+        <tr><th>Term</th><th>Parts solvent / part solute</th></tr>
+        <tr><td>Very soluble</td><td>&lt;1</td></tr>
+        <tr><td>Freely soluble</td><td>1–10</td></tr>
+        <tr><td>Soluble</td><td>10–30</td></tr>
+        <tr><td>Sparingly soluble</td><td>30–100</td></tr>
+        <tr><td>Slightly soluble</td><td>100–1000</td></tr>
+        <tr><td>Very slightly soluble</td><td>1000–10,000</td></tr>
+        <tr><td>Practically insoluble</td><td>&gt;10,000</td></tr>
+      </table>
+    </div>
+
+    <div class="card c4">
+      <h3>Solvent Classification</h3>
+      <ul>
+        <li><b>Polar</b> (water, glycols, alcohols) — dissolve ionic & polar solutes via 4 mechanisms: high dielectric constant, dipole solvation, H-bonding, acid–base reaction.</li>
+        <li><b>Nonpolar</b> (hydrocarbons) — dissolve nonpolar solutes via weak van der Waals forces only.</li>
+        <li><b>Semipolar</b> (ketones) — act as intermediate solvents / cosolvents (e.g. acetone bridges ether & water).</li>
+        <li><b>Rule:</b> "like dissolves like."</li>
+      </ul>
+    </div>
+
+    <div class="card c5">
+      <h3>Gases in Liquids</h3>
+      <div class="formula">C₂ = σp (Henry's Law)</div>
+      <ul>
+        <li>↑ Pressure → ↑ gas solubility</li>
+        <li>↑ Temperature → ↓ gas solubility</li>
+        <li>Electrolytes/nonelectrolytes cause <b>salting out</b></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Liquids in Liquids</h3>
+      <ul>
+        <li><b>Ideal solution:</b> obeys Raoult's law (adhesive = cohesive forces)</li>
+        <li><b>Negative deviation</b> (adhesive ≫ cohesive) → ↑ solubility</li>
+        <li><b>Positive deviation</b> (cohesive ≫ adhesive) → ↓ solubility</li>
+        <li><b>Complete miscibility:</b> alcohol–water · <b>Partial miscibility:</b> phenol–water</li>
+        <li><b>Blending:</b> a 3rd agent soluble in both raises mutual solubility</li>
+      </ul>
+    </div>
+
+    <div class="card c2">
+      <h3>Ideal Solubility of Solids</h3>
+      <div class="formula">−log X₂ⁱ = ΔHf/2.303R · (T₀−T)/(T·T₀)</div>
+      <ul>
+        <li>Depends on temperature (↑T → ↑solubility), melting point (↑m.p → ↓solubility), and molar heat of fusion.</li>
+        <li>Ideal solubility is <b>not</b> affected by the nature of the solvent.</li>
+        <li>Not valid when T &gt; T₀ (solute is a liquid then).</li>
+      </ul>
+    </div>
+
+    <div class="card c3">
+      <h3>Non‑Ideal Solutions</h3>
+      <div class="formula">a₂ = X₂γ₂ &nbsp;→&nbsp; −log X₂ⁱ = ΔHf/2.303R·(T₀−T)/(T·T₀) + log γ₂</div>
+      <ul>
+        <li>γ₂ = rational activity coefficient; γ₂ = 1 for an ideal solution.</li>
+        <li>X₂ and γ₂ are inversely related — the less "ideal" the fit, the bigger the correction.</li>
+      </ul>
+    </div>
+
+    <div class="card c4">
+      <h3>Strong Electrolytes & Temperature</h3>
+      <ul>
+        <li><b>Endothermic</b> dissolution → solubility rises with T (e.g. KBr)</li>
+        <li><b>Exothermic</b> dissolution → solubility falls with T (e.g. cerium(III) sulfate)</li>
+        <li><b>NaCl:</b> heat of solution ≈ 0 → solubility barely changes</li>
+        <li><b>Na₂SO₄·10H₂O</b> → endothermic below ~32 °C, exothermic above it</li>
+      </ul>
+    </div>
+
+    <div class="card c5">
+      <h3>Weak Electrolytes & pH</h3>
+      <div class="formula">pH = pKa + log([A⁻]/[HA])</div>
+      <div class="formula">pHp = pKa + log[(S−S₀)/S₀] (acid)</div>
+      <div class="formula">pHp = pKw−pKb + log[S₀/(S−S₀)] (base)</div>
+      <ul>
+        <li>pHp = pH below which an acid (or above which a base) precipitates.</li>
+        <li><b>Cosolvency:</b> a mixture of solvents dissolves more than either alone (alcohol/glycerin + water).</li>
+        <li>Alcohol raises solubility of the un-ionized species, but also raises pKa (lowers dissociation).</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Surfactants, Complexation & Particle Size</h3>
+      <ul>
+        <li>Surfactants solubilize weak acids/bases (micellar solubilization).</li>
+        <li>Complexation can raise solubility (I₂ + KI) or lower it (tetracycline + Ca²⁺ → insoluble).</li>
+        <li>Smaller particles → more surface area → higher solubility.</li>
+      </ul>
+    </div>
+
+    <div class="card c2">
+      <h3>Slightly Soluble Electrolytes — Ksp</h3>
+      <div class="formula">AgCl ⇌ Ag⁺ + Cl⁻ &nbsp;→&nbsp; Ksp = [Ag⁺][Cl⁻]</div>
+      <ul>
+        <li>Common ion → shifts equilibrium left → <b>decreases</b> solubility.</li>
+        <li>Non-common ion (moderate conc.) → lowers activity coefficient → <b>increases</b> solubility.</li>
+      </ul>
+    </div>
+
+    <div class="card c3">
+      <h3>Distribution Law & Extraction</h3>
+      <div class="formula">K = C₁ / C₂</div>
+      <div class="formula">Wₙ = W·(KV₁ / (KV₁+V₂))ⁿ</div>
+      <ul>
+        <li>Valid at constant T, when the solute is the same species in both phases.</li>
+        <li>Extraction is most efficient with <b>many small</b> portions (large n, small V₂) rather than one big one.</li>
+      </ul>
+    </div>
+
+    <div class="card c4">
+      <h3>Dissociation/Association & Preservatives</h3>
+      <div class="formula">C = (Kq + 1 + Ka/[H₃O⁺])·[HA]w</div>
+      <ul>
+        <li>Benzoic acid: monomer ⇌ dimer in oil; unionized ⇌ ionized in water.</li>
+        <li>Preservative action comes almost entirely from the <b>undissociated</b> acid — it crosses microbial membranes.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DIAGRAMS ================= -->
+<section class="section" id="diagrams">
+  <div class="section-head tag-amber">
+    <span class="eyebrow">02 · See it move</span>
+    <h2>Every figure, rebuilt to click.</h2>
+    <p>The five visuals worth understanding cold — tap through each one.</p>
+  </div>
+
+  <!-- Diagram 1: Saturation cycle -->
+  <div class="diagram-block">
+    <h3>1 · The Saturation Cycle</h3>
+    <div class="sub">Click a stage to see the beaker and read what's happening (based on the glucose/water example).</div>
+    <div class="btnrow" id="satButtons"></div>
+    <div class="beaker-row" id="satBeakers"></div>
+    <div class="state-info" id="satInfo">Click a stage above to begin.</div>
+  </div>
+
+  <!-- Diagram 2: Dielectric constant -->
+  <div class="diagram-block">
+    <h3>2 · Dielectric Constant Scale</h3>
+    <div class="sub">Solvent polarity, ranked. Click a bar to see what it dissolves.</div>
+    <div class="barchart" id="dielChart"></div>
+    <div class="state-info" id="dielInfo">Click a solvent bar to see its role.</div>
+  </div>
+
+  <!-- Diagram 3: USP classes -->
+  <div class="diagram-block">
+    <h3>3 · USP Solubility Classes</h3>
+    <div class="sub">A log scale from "very soluble" to "practically insoluble." Click a segment.</div>
+    <div class="usp-scale" id="uspScale"></div>
+    <div class="state-info" id="uspInfo">Click a segment of the scale above.</div>
+  </div>
+
+  <!-- Diagram 4: Temperature vs solubility -->
+  <div class="diagram-block">
+    <h3>4 · Solubility vs. Temperature</h3>
+    <div class="sub">Toggle each salt to isolate its curve. Endothermic curves rise; exothermic curves fall.</div>
+    <div class="chart-legend" id="tempLegend"></div>
+    <svg id="tempChart" viewBox="0 0 560 240" style="width:100%;height:auto;background:var(--paper);border-radius:12px;"></svg>
+    <div class="state-info" id="tempInfo">Toggle a legend item to spotlight that salt's behavior.</div>
+  </div>
+
+  <!-- Diagram 5: Partition simulator -->
+  <div class="diagram-block">
+    <h3>5 · Partition Coefficient Simulator</h3>
+    <div class="sub">Drag K to see how a solute redistributes between two immiscible layers at equilibrium (K = C_oil / C_water).</div>
+    <div class="slider-row">
+      <label for="kSlider" style="font-size:.85rem;font-weight:600;">K</label>
+      <input type="range" id="kSlider" min="0.2" max="5" step="0.1" value="1">
+      <span class="readout" id="kReadout">K = 1.0</span>
+    </div>
+    <div class="layers">
+      <div class="layer oil"><span class="tag">OIL PHASE</span><div id="oilDots"></div></div>
+      <div class="layer water"><span class="tag">WATER PHASE</span><div id="waterDots"></div></div>
+    </div>
+    <div class="state-info" id="partInfo">A higher K means the solute prefers the oil layer.</div>
+  </div>
+</section>
+
+<!-- ================= MINI MAP ================= -->
+<section class="section" id="map">
+  <div class="section-head tag-violet">
+    <span class="eyebrow">03 · Find anything fast</span>
+    <h2>The whole chapter, mapped.</h2>
+    <p>Click any topic title — the full explanation opens in the reader panel, right here.</p>
+  </div>
+
+  <div class="map-wrap">
+    <div id="lectureList"></div>
+    <div class="reader" id="reader">
+      <span class="eyebrow">Reader</span>
+      <h3 id="readerTitle">Nothing selected yet</h3>
+      <p class="placeholder" id="readerText">Pick a topic from the map on the left — its explanation will appear here without leaving this section.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FLASHCARDS ================= -->
+<section class="section" id="cards">
+  <div class="section-head tag-coral">
+    <span class="eyebrow">04 · Drill the terms</span>
+    <h2>Flip until it's automatic.</h2>
+    <p>Term or formula on the front, the answer on the back. Tap the card to flip it.</p>
+  </div>
+
+  <div class="fc-top">
+    <span class="fc-counter" id="fcCounter">Card 1 / 30</span>
+    <button class="fc-btn" id="fcShuffle">🔀 Shuffle deck</button>
+  </div>
+
+  <div class="fc-stage">
+    <div class="flashcard" id="flashcard">
+      <div class="fc-inner">
+        <div class="fc-face fc-front" id="fcFront">Front</div>
+        <div class="fc-face fc-back" id="fcBack">Back</div>
+      </div>
+      <div class="fc-hint">tap to flip</div>
+    </div>
+  </div>
+  <div class="fc-controls">
+    <button class="fc-btn" id="fcPrev">← Previous</button>
+    <button class="fc-btn primary" id="fcFlip">Flip card</button>
+    <button class="fc-btn" id="fcNext">Next →</button>
+  </div>
+</section>
+
+<!-- ================= QUIZ ================= -->
+<section class="section" id="quiz">
+  <div class="section-head tag-green">
+    <span class="eyebrow">05 · Test yourself</span>
+    <h2>35 questions. Options reshuffle every time.</h2>
+    <p>Pick an answer to see if you're right, then move on. Restart any time for a fresh shuffle.</p>
+  </div>
+
+  <div class="quiz-top">
+    <span class="quiz-progress" id="quizProgress">Question 1 / 35</span>
+    <span class="score-pill" id="scorePill">Score: 0 / 0</span>
+  </div>
+
+  <div class="quiz-card" id="quizCard">
+    <div class="quiz-q" id="quizQ"></div>
+    <div class="opt-list" id="quizOpts"></div>
+    <div class="quiz-explain" id="quizExplain"></div>
+  </div>
+
+  <div class="quiz-nav">
+    <button class="qbtn ghost" id="quizRestart">↺ Restart & reshuffle</button>
+    <button class="qbtn" id="quizNext" disabled>Next question →</button>
+  </div>
+</section>
+
+</main>
+
+<footer>© <span id="year"></span> <b>Anmar Taha</b> — All rights reserved.</footer>
+
+<script>
+/* ---------------- TAB SWITCHING ---------------- */
+document.getElementById('year').textContent = new Date().getFullYear();
+const tabbtns = document.querySelectorAll('.tabbtn');
+tabbtns.forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    tabbtns.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+    document.getElementById(btn.dataset.tab).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+
+/* ---------------- HERO BEAKER ANIMATION ---------------- */
+const liquidRect = document.getElementById('liquidRect');
+let fillState = 0;
+const fillLevels = [95, 60, 30, 60];
+function animateBeaker(){
+  liquidRect.setAttribute('y', fillLevels[fillState]);
+  fillState = (fillState+1) % fillLevels.length;
+}
+animateBeaker();
+setInterval(animateBeaker, 2600);
+
+/* ---------------- SHUFFLE HELPER ---------------- */
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+/* ================= DIAGRAM 1: SATURATION CYCLE ================= */
+const satStates = [
+  {name:'Unsaturated', level:30, dots:8, temp:'25°C',
+   info:'<b>Unsaturated (25°C):</b> 5 g glucose dissolved, 95 g still solid — the solvent can still take more.'},
+  {name:'Saturated', level:75, dots:2, temp:'25°C',
+   info:'<b>Saturated (25°C):</b> 91 g dissolved, 9 g undissolved solid — dynamic equilibrium between dissolved and solid glucose.'},
+  {name:'Supersaturated', level:95, dots:0, temp:'50°C → cooled',
+   info:'<b>Supersaturated:</b> heated to 50°C, all 100 g dissolves. On cooling back to 25°C it briefly holds more solute (100 g) than the 91 g limit allows.'},
+  {name:'Back to Saturated', level:75, dots:2, temp:'25°C',
+   info:'<b>Precipitate forms:</b> 9 g of glucose crystallizes out, returning the system to the 91 g saturated equilibrium.'}
+];
+const satButtons = document.getElementById('satButtons');
+const satBeakers = document.getElementById('satBeakers');
+const satInfo = document.getElementById('satInfo');
+
+function miniBeakerSVG(level, dots){
+  let dotSVG='';
+  for(let i=0;i<dots;i++){
+    const x = 20 + (i%4)*18;
+    const y = 105 - Math.floor(i/4)*10;
+    dotSVG += `<circle cx="${x}" cy="${y}" r="3" fill="#B08B3E"/>`;
+  }
+  return `<svg viewBox="0 0 100 130">
+    <path d="M18 10 L18 30 L8 115 Q8 122 18 122 L82 122 Q92 122 92 115 L82 30 L82 10 Z" fill="none" stroke="#182420" stroke-width="2.5"/>
+    <clipPath id="clip${level}${dots}"><path d="M18 10 L18 30 L8 115 Q8 122 18 122 L82 122 Q92 122 92 115 L82 30 L82 10 Z"/></clipPath>
+    <g clip-path="url(#clip${level}${dots})">
+      <rect x="0" y="${130-level}" width="100" height="${level}" fill="#49CDC0" opacity=".75"/>
+      ${dotSVG}
+    </g>
+  </svg>`;
+}
+
+function renderSat(i){
+  satButtons.querySelectorAll('.chip').forEach((c,idx)=>c.classList.toggle('on', idx===i));
+  const s = satStates[i];
+  satBeakers.innerHTML = `<div class="mini-beaker">${miniBeakerSVG(s.level, s.dots)}<div class="lbl">${s.name}<br>${s.temp}</div></div>`;
+  satInfo.innerHTML = s.info;
+}
+satStates.forEach((s,i)=>{
+  const b = document.createElement('button');
+  b.className='chip'; b.textContent=s.name;
+  b.addEventListener('click',()=>renderSat(i));
+  satButtons.appendChild(b);
+});
+renderSat(0);
+
+/* ================= DIAGRAM 2: DIELECTRIC CONSTANT ================= */
+const dielData = [
+  {name:'Water', val:80, note:'Dissolves ionic solutes & salts — e.g. NaCl, sugar.'},
+  {name:'Glycols', val:50, note:'Polar polyhydroxy solvents; good cosolvents (e.g. propylene glycol).'},
+  {name:'Methyl & ethyl alcohols', val:30, note:'Polar, but weaker than water at separating ion pairs.'},
+  {name:'Aldehydes, ketones, higher alcohols, ethers, esters, oxides', val:20, note:'Semipolar — can induce polarity in nonpolar solvents (e.g. acetone).'},
+  {name:'Hexane, benzene, CCl₄, ethyl ether, petroleum ether', val:5, note:'Nonpolar — dissolve oils & fats via van der Waals forces only.'},
+  {name:'Mineral oil & fixed vegetable oils', val:0, note:'Essentially nonpolar — cannot dissolve ionic compounds at all.'}
+];
+const dielChart = document.getElementById('dielChart');
+const dielInfo = document.getElementById('dielInfo');
+dielData.forEach((d,i)=>{
+  const row = document.createElement('div');
+  row.className='bar-row';
+  row.innerHTML = `<div class="name">${d.name}</div>
+    <div class="bar-track"><div class="bar-fill" style="width:${d.val/80*100}%"></div></div>
+    <div class="val">ε≈${d.val}</div>`;
+  row.addEventListener('click',()=>{
+    dielChart.querySelectorAll('.bar-row').forEach(r=>r.classList.remove('active'));
+    row.classList.add('active');
+    dielInfo.innerHTML = `<b>${d.name} (ε≈${d.val}):</b> ${d.note}`;
+  });
+  dielChart.appendChild(row);
+});
+
+/* ================= DIAGRAM 3: USP SCALE ================= */
+const uspData = [
+  {name:'VS', full:'Very soluble', range:'<1', color:'#1F8F85'},
+  {name:'FS', full:'Freely soluble', range:'1–10', color:'#49CDC0'},
+  {name:'S', full:'Soluble', range:'10–30', color:'#7AB37A'},
+  {name:'SPS', full:'Sparingly soluble', range:'30–100', color:'#DFA43F'},
+  {name:'SS', full:'Slightly soluble', range:'100–1000', color:'#E1684A'},
+  {name:'VSS', full:'Very slightly soluble', range:'1000–10,000', color:'#8D80D6'},
+  {name:'PI', full:'Practically insoluble', range:'>10,000', color:'#0E2B27'}
+];
+const uspScale = document.getElementById('uspScale');
+const uspInfo = document.getElementById('uspInfo');
+uspData.forEach(u=>{
+  const seg = document.createElement('div');
+  seg.className='usp-seg';
+  seg.style.background = u.color;
+  seg.textContent = u.name;
+  seg.addEventListener('click',()=>{
+    uspScale.querySelectorAll('.usp-seg').forEach(s=>s.classList.remove('on'));
+    seg.classList.add('on');
+    uspInfo.innerHTML = `<b>${u.full}:</b> requires ${u.range} parts of solvent per 1 part of solute.`;
+  });
+  uspScale.appendChild(seg);
+});
+
+/* ================= DIAGRAM 4: TEMPERATURE CHART ================= */
+const tempSalts = [
+  {name:'KBr (endothermic)', color:'#1F8F85', path:'M20,190 C120,170 250,90 540,30', note:'Absorbs heat on dissolving → solubility rises steadily with temperature.'},
+  {name:'Na₂SO₄ (transition ~32°C)', color:'#DFA43F', path:'M20,150 C150,60 220,55 300,80 S480,150 540,170', note:'Endothermic as the hydrate below ~32°C, then exothermic as the anhydrous salt above it — solubility peaks and falls.'},
+  {name:'NaCl (isothermic)', color:'#8D80D6', path:'M20,140 C180,135 380,132 540,128', note:'Heat of solution ≈ 0 → nearly flat line; solubility barely changes with temperature.'},
+  {name:'Cerium(III) sulfate (exothermic)', color:'#E1684A', path:'M20,120 C180,140 380,165 540,185', note:'Releases heat on dissolving → solubility falls as temperature rises.'}
+];
+const tempLegend = document.getElementById('tempLegend');
+const tempChart = document.getElementById('tempChart');
+const tempInfo = document.getElementById('tempInfo');
+let tempVisible = tempSalts.map(()=>true);
+
+function drawTempChart(){
+  let svg = `<line x1="20" y1="205" x2="540" y2="205" stroke="#182420" stroke-width="1.5"/>
+             <line x1="20" y1="15" x2="20" y2="205" stroke="#182420" stroke-width="1.5"/>
+             <text x="280" y="228" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#4B5850">Temperature →</text>
+             <text x="14" y="14" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="#4B5850">Solubility</text>`;
+  tempSalts.forEach((s,i)=>{
+    if(tempVisible[i]){
+      svg += `<path d="${s.path}" fill="none" stroke="${s.color}" stroke-width="3.5" stroke-linecap="round" opacity="0.95"/>`;
+    }
+  });
+  tempChart.innerHTML = svg;
+}
+function drawLegend(){
+  tempLegend.innerHTML='';
+  tempSalts.forEach((s,i)=>{
+    const item = document.createElement('div');
+    item.className = 'leg-item' + (tempVisible[i]?'':' off');
+    item.innerHTML = `<span class="leg-dot" style="background:${s.color}"></span>${s.name}`;
+    item.addEventListener('click',()=>{
+      tempVisible[i] = !tempVisible[i];
+      drawLegend(); drawTempChart();
+      tempInfo.innerHTML = tempVisible[i] ? `<b>${s.name}:</b> ${s.note}` : 'Toggle a legend item to spotlight that salt\'s behavior.';
+    });
+    tempLegend.appendChild(item);
+  });
+}
+drawLegend(); drawTempChart();
+
+/* ================= DIAGRAM 5: PARTITION SIMULATOR ================= */
+const kSlider = document.getElementById('kSlider');
+const kReadout = document.getElementById('kReadout');
+const oilDots = document.getElementById('oilDots');
+const waterDots = document.getElementById('waterDots');
+const partInfo = document.getElementById('partInfo');
+const TOTAL_DOTS = 20;
+function renderPartition(){
+  const k = parseFloat(kSlider.value);
+  kReadout.textContent = 'K = ' + k.toFixed(1);
+  const oilCount = Math.round(TOTAL_DOTS * (k/(k+1)));
+  const waterCount = TOTAL_DOTS - oilCount;
+  oilDots.innerHTML = '<div style="display:flex;flex-wrap:wrap;gap:5px;">' + '<span class="dot"></span>'.repeat(oilCount) + '</div>';
+  waterDots.innerHTML = '<div style="display:flex;flex-wrap:wrap;gap:5px;">' + '<span class="dot" style="background:#1F8F85"></span>'.repeat(waterCount) + '</div>';
+  partInfo.innerHTML = `<b>K = ${k.toFixed(1)}</b> → roughly ${oilCount}/${TOTAL_DOTS} of the solute sits in the oil layer at equilibrium. ${k>1?'The solute favors the oil (lipophilic).':'The solute favors water (hydrophilic).'}`;
+}
+kSlider.addEventListener('input', renderPartition);
+renderPartition();
+
+/* ================= MINI MAP DATA ================= */
+const mapData = [
+  {lecture:'Lecture 1', topics:[
+    {t:'Solubility — definitions', body:'Quantitatively, solubility is the concentration of solute in a saturated solution at a certain temperature. Qualitatively, it is the spontaneous interaction of two or more substances to form a homogeneous molecular dispersion.'},
+    {t:'Saturated / unsaturated / supersaturated', body:'A saturated solution has solute in equilibrium with the solid phase. An unsaturated (subsaturated) solution holds less solute than the saturation limit. A supersaturated solution holds more dissolved solute than the solubility limit predicts — e.g. cooling a hot glucose solution can leave 100 g dissolved when only 91 g is the 25°C limit, until 9 g eventually precipitates.'},
+    {t:'Factors affecting solubility', body:'Five factors: physical & chemical properties of the solute and solvent, temperature, pressure above the solution, pH, and the state of subdivision (particle size) of the solute.'},
+    {t:'Solubility expressions', body:'Solubility can be expressed as molarity, normality, molality, mole fraction, or percentage (w/w, w/v, v/v). The USP expresses it as the number of mL of solvent needed to dissolve 1 g of solute (e.g. 1 g boric acid in 18 mL water, or 4 mL glycerin), and also uses descriptive classes from "very soluble" (<1 part solvent) to "practically insoluble" (>10,000 parts).'},
+    {t:'Solute–solvent interactions & dielectric constant', body:'Dissolution requires breaking cohesive forces within the solute and solvent and forming adhesive forces between them. The dielectric constant (ε) indexes a solvent\'s polarity — its ability to separate oppositely charged ions. Water (ε≈80) sits at the top; mineral/vegetable oils (ε≈0) at the bottom.'}
+  ]},
+  {lecture:'Lecture 2', topics:[
+    {t:'Classification of solvents', body:'Solvents are polar, nonpolar, or semipolar. Polar solvents (water, glycols, methyl/ethyl alcohol) dissolve ionic and other polar substances. Structural features matter too: long straight-chain monohydroxy alcohols (>5 C) are only slightly water-soluble; branching (e.g. tertiary butyl alcohol) increases water solubility; polyhydroxy compounds (glycerin, tartaric acid, PEG) are water-soluble.'},
+    {t:'How polar solvents act', body:'Four mechanisms: (A) high dielectric constant reduces attraction between oppositely charged ions in a crystal (water dissolves NaCl; chloroform/benzene, with low ε, cannot); (B) dipole solvation of ions/molecules; (C) hydrogen bond formation with phenols, alcohols, and O/N-containing compounds; (D) acid–base reactions that break covalent bonds of strong electrolytes (e.g. HCl + H₂O → H₃O⁺ + Cl⁻).'},
+    {t:'Nonpolar solvents', body:'Hydrocarbons cannot reduce ionic attraction (low ε), cannot form hydrogen bonds, and cannot break covalent bonds. They dissolve nonpolar solutes only via weak van der Waals forces (e.g. oils and fats in CCl₄ or benzene).'},
+    {t:'Semipolar solvents', body:'Ketones and similar solvents can induce a degree of polarity in nonpolar molecules, acting as intermediate solvents that bring about miscibility between polar and nonpolar liquids — e.g. acetone increases the solubility of ether in water.'}
+  ]},
+  {lecture:'Lecture 3', topics:[
+    {t:'Types of solutions', body:'Pharmaceutically important solutions fall into three categories: gases in liquids, liquids in liquids, and solids in liquids.'},
+    {t:'Henry\'s Law & pressure', body:'For a dilute solution at constant temperature, C₂ = σp: the concentration of dissolved gas is proportional to the partial pressure of the gas above the solution. σ is the solubility coefficient. When pressure is released, solubility drops and gas can escape violently — the basis of effervescent preparations.'},
+    {t:'Temperature & salting out', body:'As temperature increases, gas solubility decreases (the gas tends to expand out of solution) — so gaseous containers should be cooled before opening in warm climates. Adding electrolytes (NaCl) or even nonelectrolytes (sucrose) to a carbonated solution causes "salting out," liberating dissolved gas because the ions/polar molecules tie up water molecules that would otherwise surround the gas.'},
+    {t:'Liquids in liquids — ideal & real solutions', body:'An ideal solution obeys Raoult\'s law (adhesive forces = cohesive forces). Real solutions deviate: negative deviation (adhesive ≫ cohesive) increases solubility; positive deviation (cohesive ≫ adhesive) decreases it. Liquid–liquid systems are either completely miscible (alcohol & water, benzene & CCl₄) or partially miscible (phenol & water), depending on whether A–B forces dominate A–A/B–B forces.'}
+  ]},
+  {lecture:'Lecture 4', topics:[
+    {t:'Influence of foreign substances (blending)', body:'A substance soluble in only one of two partially miscible liquids decreases their mutual solubility (e.g. naphthalene in a phenol–water mixture dissolves only in phenol). A substance soluble in both liquids increases mutual solubility (e.g. succinic acid or sodium oleate in phenol–water) — this enhancing effect is called "blending."'},
+    {t:'Ideal solution of solids', body:'The solubility of a solid in an ideal solution depends on temperature (direct relationship), melting point (inverse relationship), and the molar heat of fusion, ΔHf (assumed constant, independent of temperature). Ideal solubility is not affected by the nature of the solvent.'},
+    {t:'The ideal solubility equation', body:'−log X₂ⁱ = ΔHf / 2.303R × (T₀−T)/(T·T₀), where X₂ⁱ is the ideal mole-fraction solubility, T₀ is the solute\'s melting point (absolute), and T is the solution temperature. It does not apply once T exceeds T₀. Worked example: naphthalene (m.p. 80°C, ΔHf = 4500 cal/mol) has an ideal solubility of X₂ⁱ = 0.27 at 20°C — and solubility rises further as temperature increases.'}
+  ]},
+  {lecture:'Lecture 5', topics:[
+    {t:'Non-ideal solutions & activity coefficient', body:'Activity a₂ = X₂γ₂, where γ₂ is the rational activity coefficient (γ₂=1 for an ideal solution). Combining this with the ideal solubility equation gives −log X₂ⁱ = ΔHf/2.303R·(T₀−T)/(T·T₀) + log γ₂ — mole-fraction solubility in real solvents equals ideal solubility plus the log of the activity coefficient. As γ₂ approaches 1, the equation returns to the ideal case; X₂ and γ₂ are inversely related.'},
+    {t:'Solubility of strong electrolytes vs. temperature', body:'A rise in temperature increases solubility for solids that absorb heat on dissolving (endothermic, e.g. KBr) and decreases it for solids whose dissolution is exothermic (e.g. cerium(III) sulfate). Sodium sulfate is hydrated (Na₂SO₄·10H₂O) below ~32°C (endothermic, solubility rises) but exists as the anhydrous salt above that point (exothermic, solubility falls). NaCl dissolves with almost zero heat of solution, so its solubility is nearly independent of temperature.'}
+  ]},
+  {lecture:'Lecture 6', topics:[
+    {t:'Weak electrolytes & pH', body:'Weak acids form water-soluble salts with dilute alkali but precipitate as free acid if the solution is made more acidic (e.g. sodium phenobarbital precipitates as phenobarbital below pH 9.3). Weak bases form soluble salts with dilute acid but precipitate as free base if the pH is raised (e.g. atropine sulfate).'},
+    {t:'Henderson–Hasselbalch & pHp equations', body:'pH = pKa + log([A⁻]/[HA]); when salt and acid concentrations are equal, pH = pKa. The pHp equation predicts the pH at which precipitation begins: pH = pKa + log[(S−S₀)/S₀] for a weak acid, or pH = pKw−pKb + log[S₀/(S−S₀)] for a weak base, where S₀ is the molar solubility of the un-ionized drug and S is the initial molar salt concentration. Worked example: sodium phenobarbital (1 g/100 mL, pKa 7.41, S₀=0.0050) precipitates below pH 8.24.'},
+    {t:'Cosolvency & solvent effects', body:'A solute is often more soluble in a mixed solvent system than in any single solvent — this is cosolvency, and the solvents involved are cosolvents (e.g. alcohol or glycerin raise phenobarbital\'s solubility in water). Alcohol added to a buffered solution has two competing effects: it raises solubility of the un-ionized species by adjusting solvent polarity, but it also decreases dissociation of the weak electrolyte (raising its pKa), which can lower solubility.'},
+    {t:'Surfactants, complexation, and particle size', body:'Weakly acidic/basic drugs can be solubilized by surfactants (detergents). Complexation can raise solubility (potassium iodide + iodine) or lower it (tetracycline + calcium forms an insoluble complex). Solubility rises as particle size falls (greater surface area); crystal shape/symmetry also plays a role — a symmetric particle can be less soluble than an unsymmetrical one.'}
+  ]},
+  {lecture:'Lecture 7', topics:[
+    {t:'Solubility product, Ksp', body:'For a slightly soluble electrolyte like AgCl ⇌ Ag⁺ + Cl⁻, the equilibrium is expressed as Ksp = [Ag⁺][Cl⁻] (concentration of the solid phase is constant and dropped out). For a compound like Al(OH)₃, each ion\'s concentration is raised to the power of its number of ions: Ksp = [Al³⁺][OH⁻]³. Example: AgCl solubility 1.12×10⁻⁵ mol/L gives Ksp = 1.25×10⁻¹⁰.'},
+    {t:'Common ion effect', body:'Adding an ion in common with the slightly soluble salt (e.g. adding NaCl to an AgCl solution) momentarily pushes [Ag⁺][Cl⁻] above Ksp, so AgCl precipitates until equilibrium is restored — net effect: reduced solubility. Salts with no common ion do the opposite at moderate concentration: they raise solubility slightly by lowering the activity coefficient.'},
+    {t:'Distribution law', body:'When excess solute is shaken with two immiscible liquids, it distributes so each phase is saturated (or, if insufficient to saturate, distributes in a fixed ratio). K = C₁/C₂ is the distribution law; K is the distribution ratio / distribution coefficient / partition coefficient — constant at a given temperature once equilibrium is reached.'},
+    {t:'Conditions for the partition law', body:'The partition law holds true only (1) at constant temperature and (2) when the solute exists as the same molecular species in both solvents. Example: boric acid between water and amyl alcohol gives K = 3.29 (water/alcohol) or equivalently 0.304 (alcohol/water) — the direction must always be specified.'}
+  ]},
+  {lecture:'Lecture 8', topics:[
+    {t:'Ionic dissociation & molecular association in partition', body:'Some solutes exist as more than one species in each phase, complicating the partition coefficient. Benzoic acid, for example, exists as monomer and dimer in oil, and as un-ionized (HA) and ionized (A⁻) forms in water.'},
+    {t:'True vs. apparent distribution coefficient', body:'The true distribution coefficient K uses only the molar concentration of the species common to both phases: K = [HA]o/[HA]w. The apparent (observed) coefficient K′ uses the total concentration of all species in each phase: K′ = ([HA]o+[HA]d)/([HA]w+[A⁻]w). It depends on both the oil-phase monomer/dimer equilibrium and the water-phase ionization equilibrium (set by pKa and pH).'},
+    {t:'Liquid–liquid extraction', body:'Extraction transfers a solute from one liquid phase to another based on relative solubility (the distribution coefficient). Classic illustration: sugar dissolved in vegetable oil is extracted into water (sugar is far more soluble in water, and oil/water are immiscible) — shaking moves the sugar into the water layer. Iodine can likewise be extracted from water into hexane.'}
+  ]},
+  {lecture:'Lecture 9', topics:[
+    {t:'Extraction efficiency equation', body:'K = (W₁/V₁) / ((W−W₁)V₂) rearranges to Wₙ = W·(KV₁/(KV₁+V₂))ⁿ, where W is the original solute mass, V₁ the original solvent volume, V₂ the extracting solvent volume per step, and n the number of repeated extractions. Extraction is most efficient when n is large and V₂ is small — several small portions outperform one large one. Example: extracting iodine from water with CCl₄, two 5 mL portions removed more iodine (0.0989 g) than one 10 mL portion.'},
+    {t:'Preservative action of weak acids', body:'The antimicrobial action of preservatives like benzoic acid (used as sodium benzoate) comes almost entirely from the undissociated molecule, since the nonpolar, un-ionized form crosses lipoidal microbial membranes far more readily than the ionic form.'},
+    {t:'Calculating required preservative concentration', body:'For an oil–water system: C = (Kq + 1 + Ka/[H₃O⁺])·[HA]w, where C is the total acid concentration needed, K is the distribution coefficient, q = Vo/Vw is the phase volume ratio, and Ka is the aqueous dissociation constant. Example: benzoic acid in equal volumes of peanut oil/water (K=5.33, Ka=6.4×10⁻⁵) needs a total concentration of 1.74 mg/mL to leave 0.25 mg/mL of undissociated acid in water buffered at pH 4.0.'}
+  ]}
+];
+
+const lectureListEl = document.getElementById('lectureList');
+const readerTitle = document.getElementById('readerTitle');
+const readerText = document.getElementById('readerText');
+
+mapData.forEach(lec=>{
+  const block = document.createElement('div');
+  block.className='lecture-block';
+  const title = document.createElement('div');
+  title.className='lecture-title';
+  title.textContent = lec.lecture;
+  block.appendChild(title);
+  const row = document.createElement('div');
+  row.className='topic-row';
+  lec.topics.forEach(top=>{
+    const btn = document.createElement('button');
+    btn.className='topic-btn';
+    btn.textContent = top.t;
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.topic-btn').forEach(b=>b.classList.remove('on'));
+      btn.classList.add('on');
+      readerTitle.textContent = top.t;
+      readerText.classList.remove('placeholder');
+      readerText.textContent = top.body;
+    });
+    row.appendChild(btn);
+  });
+  block.appendChild(row);
+  lectureListEl.appendChild(block);
+});
+
+/* ================= FLASHCARDS ================= */
+const flashData = [
+  ['Saturated solution','Solute is in equilibrium with the solid (undissolved) phase.'],
+  ['Unsaturated solution','Contains less dissolved solute than the saturation concentration at that temperature.'],
+  ['Supersaturated solution','Contains more dissolved solute than the solubility limit predicts — a metastable state.'],
+  ['Solubility (quantitative definition)','The concentration of solute in a saturated solution at a certain temperature.'],
+  ['Dielectric constant (ε)','An index of a solvent\'s polarity — its ability to separate two oppositely charged ions.'],
+  ['"Like dissolves like"','Polar solutes dissolve best in polar solvents; nonpolar solutes dissolve best in nonpolar solvents.'],
+  ["Henry's Law", 'C₂ = σp — the concentration of dissolved gas is proportional to the partial pressure of gas above the solution.'],
+  ['Salting out','Adding electrolytes or nonelectrolytes to a gaseous solution liberates dissolved gas.'],
+  ["Raoult's Law / ideal solution",'Adhesive forces between unlike molecules equal cohesive forces between like molecules.'],
+  ['Negative deviation','Adhesive forces ≫ cohesive forces → increased solubility.'],
+  ['Positive deviation','Cohesive forces ≫ adhesive forces → decreased solubility.'],
+  ['Complete miscibility','Occurs when A–B adhesive forces ≫ A–A or B–B cohesive forces (e.g. alcohol & water).'],
+  ['Partial miscibility','Occurs when cohesive forces of the two liquids are very different (e.g. water & hexane; phenol & water).'],
+  ['Blending','Increasing the mutual solubility of two partially miscible liquids by adding a third agent soluble in both.'],
+  ['Ideal solubility equation','−log X₂ⁱ = ΔHf/2.303R × (T₀−T)/(T·T₀).'],
+  ['Activity coefficient, γ₂','Correction factor for non-ideal solutions; a₂ = X₂γ₂, with γ₂ = 1 for an ideal solution.'],
+  ['Endothermic dissolution','Heat is absorbed on dissolving; solubility increases with temperature (e.g. KBr).'],
+  ['Exothermic dissolution','Heat is released on dissolving; solubility decreases with temperature (e.g. cerium(III) sulfate).'],
+  ['Henderson–Hasselbalch equation','pH = pKa + log([A⁻]/[HA]).'],
+  ['pHp','The pH below which a weak acid (or above which a weak base) begins to precipitate from solution.'],
+  ['Cosolvency','A solute is more soluble in a mixture of solvents than in any one solvent alone.'],
+  ['Complexation effect on solubility','Can increase solubility (KI + I₂) or decrease it (tetracycline + calcium → insoluble complex).'],
+  ['Particle size effect','Solubility increases as particle size decreases, due to increased surface area.'],
+  ['Solubility product, Ksp','The equilibrium constant for a slightly soluble electrolyte, e.g. Ksp = [Ag⁺][Cl⁻] for AgCl.'],
+  ['Common ion effect','Adding an ion common to a slightly soluble electrolyte decreases its solubility.'],
+  ['Distribution law','K = C₁/C₂ — the ratio of a solute\'s equilibrium concentrations in two immiscible solvents.'],
+  ['True distribution coefficient','The ratio of concentrations of the same molecular species that is common to both phases.'],
+  ['Apparent (observed) distribution coefficient','Uses the total analytical concentration of all species (ionized + un-ionized, monomer + dimer) in both phases.'],
+  ['Extraction efficiency rule','Extraction is most efficient with a large number of extractions (n) using a small volume (V₂) each time.'],
+  ['Preservative action of weak acids','Comes almost entirely from the undissociated molecule, which penetrates microbial membranes readily.']
+];
+let fcOrder = flashData.map((_,i)=>i);
+let fcIndex = 0;
+const flashcardEl = document.getElementById('flashcard');
+const fcFront = document.getElementById('fcFront');
+const fcBack = document.getElementById('fcBack');
+const fcCounter = document.getElementById('fcCounter');
+
+function renderFlashcard(){
+  flashcardEl.classList.remove('flip');
+  const idx = fcOrder[fcIndex];
+  fcFront.textContent = flashData[idx][0];
+  fcBack.textContent = flashData[idx][1];
+  fcCounter.textContent = `Card ${fcIndex+1} / ${flashData.length}`;
+}
+document.getElementById('fcFlip').addEventListener('click',()=>flashcardEl.classList.toggle('flip'));
+flashcardEl.addEventListener('click',()=>flashcardEl.classList.toggle('flip'));
+document.getElementById('fcNext').addEventListener('click',()=>{ fcIndex=(fcIndex+1)%fcOrder.length; renderFlashcard(); });
+document.getElementById('fcPrev').addEventListener('click',()=>{ fcIndex=(fcIndex-1+fcOrder.length)%fcOrder.length; renderFlashcard(); });
+document.getElementById('fcShuffle').addEventListener('click',()=>{ fcOrder = shuffle(fcOrder); fcIndex=0; renderFlashcard(); });
+renderFlashcard();
+
+/* ================= QUIZ BANK ================= */
+const quizData = [
+ {q:"What is the quantitative definition of solubility?", opts:["The concentration of solute in a saturated solution at a certain temperature","The volume of solvent needed to dissolve 1 g of solute","The rate at which a solute dissolves","The maximum pH at which a drug remains soluble"], correct:0},
+ {q:"A solution in which dissolved solute is in equilibrium with undissolved solid is:", opts:["Saturated","Unsaturated","Supersaturated","Diluted"], correct:0},
+ {q:"A supersaturated solution contains:", opts:["More dissolved solute than the solubility limit predicts","Less solute than the saturation limit","Only solvent, no solute","Equal weights of solute and solvent"], correct:0},
+ {q:"In the glucose cooling example, how much glucose precipitates when 100 g dissolved is cooled to a 91 g solubility limit?", opts:["9 g","91 g","100 g","5 g"], correct:0},
+ {q:"Which of these is NOT one of the five listed factors affecting solubility?", opts:["Color of the solute","Temperature of the solution","pH of the solution","State of subdivision of the solute"], correct:0},
+ {q:"Per USP, solubility is expressed as:", opts:["The number of mL of solvent in which 1 g of solute will dissolve","The number of grams of solute per liter of solvent","The percentage of solute by volume only","The pH at which the solute precipitates"], correct:0},
+ {q:"Per USP, a substance needing 1–10 parts of solvent per part of solute is:", opts:["Freely soluble","Very soluble","Sparingly soluble","Slightly soluble"], correct:0},
+ {q:"Per USP, a substance needing more than 10,000 parts of solvent per part of solute is:", opts:["Practically insoluble","Very slightly soluble","Slightly soluble","Soluble"], correct:0},
+ {q:"Which solvent has the highest dielectric constant?", opts:["Water","Mineral oil","Hexane","Methyl alcohol"], correct:0},
+ {q:'The principle "like dissolves like" means:', opts:["Polar solutes dissolve best in polar solvents; nonpolar solutes in nonpolar solvents","All substances dissolve equally in any solvent","Only ionic compounds are soluble in anything","Solubility has nothing to do with polarity"], correct:0},
+ {q:"Why can water dissolve NaCl while benzene cannot?", opts:["Water's high dielectric constant reduces the attraction between oppositely charged ions","Water forms covalent bonds with Na⁺","Benzene has a higher dielectric constant than water","NaCl is a nonpolar compound"], correct:0},
+ {q:"Acetone increasing the solubility of ether in water demonstrates the role of a:", opts:["Semipolar (intermediate) solvent","Nonpolar solvent","Strong electrolyte","Common ion"], correct:0},
+ {q:"According to Henry's Law, the concentration of dissolved gas (C₂) is:", opts:["Directly proportional to the partial pressure of the gas above the solution","Inversely proportional to pressure","Independent of pressure","Proportional to temperature only"], correct:0},
+ {q:"As temperature increases, the solubility of a gas in a liquid generally:", opts:["Decreases","Increases","Stays constant","Becomes infinite"], correct:0},
+ {q:"Adding NaCl to a carbonated solution, causing gas to escape, is called:", opts:["Salting out","Salting in","Blending","Cosolvency"], correct:0},
+ {q:"An ideal solution is one in which:", opts:["The components obey Raoult's law; adhesive forces equal cohesive forces","The components never mix at all","Only gases are present","The solute is always ionic"], correct:0},
+ {q:"Negative deviation from Raoult's law (adhesive ≫ cohesive) leads to:", opts:["Increased solubility","Decreased solubility","No change in solubility","Immediate precipitation"], correct:0},
+ {q:"Phenol and water form which type of liquid–liquid system?", opts:["Partial miscibility","Complete miscibility","Complete immiscibility","Supersaturation"], correct:0},
+ {q:"Adding naphthalene (soluble only in phenol) to a phenol–water mixture makes the mutual solubility:", opts:["Decrease","Increase","Stay unaffected","Become complete"], correct:0},
+ {q:"Increasing the mutual solubility of two partially miscible liquids using a third agent is called:", opts:["Blending","Salting out","Complexation","Extraction"], correct:0},
+ {q:"Ideal solubility of a solid is NOT affected by:", opts:["The nature of the solvent","Temperature","The melting point of the solid","The molar heat of fusion"], correct:0},
+ {q:"As the melting point of a solid solute increases (all else equal), its ideal mole-fraction solubility:", opts:["Decreases","Increases","Stays the same","Becomes negative"], correct:0},
+ {q:"In −log X₂ⁱ = ΔHf/2.303R × (T₀−T)/(T·T₀), T₀ represents:", opts:["The melting point of the solid solute, in absolute degrees","Room temperature","The boiling point of the solvent","The critical temperature"], correct:0},
+ {q:"In a non-ideal solution, the mole-fraction solubility equation adds a term equal to:", opts:["log γ₂ (log of the activity coefficient)","The vapor pressure of the solvent","The molecular weight of the solute","The dielectric constant"], correct:0},
+ {q:"KBr's solubility rises with temperature because its dissolution is:", opts:["Endothermic","Exothermic","Isothermic","Photochemical"], correct:0},
+ {q:"Cerium(III) sulfate's dissolution is exothermic, so its solubility as temperature rises:", opts:["Decreases","Increases","Stays constant","Becomes zero"], correct:0},
+ {q:"NaCl's solubility barely changes with temperature because its heat of solution is approximately:", opts:["Zero (isothermic)","Very high (positive)","Very high (negative)","Undefined"], correct:0},
+ {q:"By the Henderson–Hasselbalch equation, when acid and salt concentrations are equal, the pH equals:", opts:["The pKa of the acid","Zero","7","The pKb of the acid"], correct:0},
+ {q:"pHp is defined as:", opts:["The pH below which an acid (or above which a base) begins to precipitate","The pH at which a drug is 100% ionized","The isoelectric point of a protein","The pH of pure water"], correct:0},
+ {q:"Cosolvency refers to:", opts:["A solute being more soluble in a solvent mixture than in any one solvent alone","A solute being completely insoluble in mixed solvents","Removing solvent by evaporation","A method of measuring pH"], correct:0},
+ {q:"Adding alcohol to a weak electrolyte's buffered solution raises solubility of the un-ionized form, but alcohol also:", opts:["Decreases dissociation, raising the apparent pKa","Increases dissociation, lowering the pKa","Has no effect on dissociation at all","Converts the acid entirely into its salt"], correct:0},
+ {q:"The complex formed between tetracycline and calcium:", opts:["Decreases solubility (forms an insoluble complex)","Increases solubility","Has no effect on solubility","Releases a gas"], correct:0},
+ {q:"Solubility generally increases as particle size decreases because:", opts:["Surface area increases","Melting point increases","Density decreases","The dielectric constant increases"], correct:0},
+ {q:"For AgCl(solid) ⇌ Ag⁺ + Cl⁻, the solubility product Ksp equals:", opts:["[Ag⁺][Cl⁻]","[Ag⁺]/[Cl⁻]","[Ag⁺]+[Cl⁻]","the concentration of AgCl solid"], correct:0},
+ {q:"Adding NaCl (a common ion) to a saturated AgCl solution will:", opts:["Decrease the solubility of AgCl","Increase the solubility of AgCl","Have no effect on solubility","Convert AgCl into a different salt"], correct:0},
+ {q:"Salts with NO ion in common with a slightly soluble electrolyte, at moderate concentration, tend to:", opts:["Increase its solubility by lowering the activity coefficient","Decrease its solubility","Have no measurable effect","Cause immediate precipitation"], correct:0},
+ {q:"The distribution law / partition coefficient K between two immiscible solvents is:", opts:["The ratio of the solute's equilibrium concentrations in the two solvents","The sum of the concentrations in both solvents","The difference between the two concentrations","The product of the two concentrations"], correct:0},
+ {q:"The partition law holds true only when:", opts:["Temperature is constant and the solute exists as the same species in both solvents","The two solvents are fully miscible","The solute completely ionizes in both phases","Pressure varies continuously"], correct:0},
+ {q:"In the oil phase, benzoic acid used as a preservative mainly exists as:", opts:["Monomer and dimer in equilibrium","Only a triple ion","A fully ionized salt only","A gas"], correct:0},
+ {q:"The preservative action of benzoic acid in oil–water systems comes almost entirely from:", opts:["The undissociated (unionized) acid, which penetrates microbial membranes","The ionized form","The dimeric form in oil only","The salt form only"], correct:0},
+ {q:"According to Wₙ = W(KV₁/(KV₁+V₂))ⁿ, extraction efficiency is greatest when:", opts:["n is large and V₂ (extracting solvent per step) is small","n is small and V₂ is large","K equals zero","V₁ equals zero"], correct:0}
+];
+
+let quizOrder = [];
+let quizIdx = 0;
+let score = 0;
+let answered = 0;
+let currentShuffledOpts = [];
+let currentCorrectIdx = -1;
+let locked = false;
+
+function setupQuiz(){
+  quizOrder = shuffle(quizData.map((_,i)=>i));
+  quizIdx = 0; score = 0; answered = 0;
+  renderQuiz();
+}
+function renderQuiz(){
+  locked = false;
+  const item = quizData[quizOrder[quizIdx]];
+  document.getElementById('quizQ').textContent = item.q;
+  document.getElementById('quizProgress').textContent = `Question ${quizIdx+1} / ${quizOrder.length}`;
+  document.getElementById('scorePill').textContent = `Score: ${score} / ${answered}`;
+  document.getElementById('quizExplain').style.display='none';
+  document.getElementById('quizNext').disabled = true;
+
+  const optIdx = item.opts.map((_,i)=>i);
+  const shuffled = shuffle(optIdx);
+  currentShuffledOpts = shuffled.map(i=>item.opts[i]);
+  currentCorrectIdx = shuffled.indexOf(item.correct);
+
+  const optList = document.getElementById('quizOpts');
+  optList.innerHTML = '';
+  currentShuffledOpts.forEach((opt,i)=>{
+    const b = document.createElement('button');
+    b.className='opt';
+    b.textContent = opt;
+    b.addEventListener('click',()=>selectOpt(i,b));
+    optList.appendChild(b);
+  });
+}
+function selectOpt(i,btn){
+  if(locked) return;
+  locked = true;
+  answered++;
+  const allOpts = document.querySelectorAll('#quizOpts .opt');
+  allOpts.forEach(o=>o.classList.add('disabled'));
+  if(i===currentCorrectIdx){
+    score++;
+    btn.classList.add('correct');
+  } else {
+    btn.classList.add('wrong');
+    allOpts[currentCorrectIdx].classList.add('correct');
+  }
+  document.getElementById('scorePill').textContent = `Score: ${score} / ${answered}`;
+  document.getElementById('quizNext').disabled = false;
+}
+document.getElementById('quizNext').addEventListener('click',()=>{
+  if(quizIdx < quizOrder.length-1){
+    quizIdx++;
+    renderQuiz();
+  } else {
+    document.getElementById('quizCard').innerHTML = `
+      <div class="quiz-final">
+        <span class="eyebrow" style="color:var(--green);">All done</span>
+        <div class="display">${score} / ${answered}</div>
+        <p style="color:var(--text-soft);margin-top:8px;">Restart below for a fresh shuffle of both questions and answers.</p>
+      </div>`;
+    document.getElementById('quizNext').disabled = true;
+  }
+});
+document.getElementById('quizRestart').addEventListener('click',()=>{
+  document.getElementById('quizCard').innerHTML = `
+    <div class="quiz-q" id="quizQ"></div>
+    <div class="opt-list" id="quizOpts"></div>
+    <div class="quiz-explain" id="quizExplain"></div>`;
+  setupQuiz();
+});
+setupQuiz();
+</script>
+</body>
+</html>
